@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,7 +11,7 @@ namespace API
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
            var host =  CreateHostBuilder(args).Build();
            using var scope = host.Services.CreateScope(); 
@@ -20,7 +21,8 @@ namespace API
            try
            {
                var context = services.GetRequiredService<DataContext>(); 
-               context.Database.Migrate();
+               await context.Database.MigrateAsync();
+               await Seed.SeedData(context); 
 
                // Creates database and applies migrations on run time 
            }
@@ -30,7 +32,7 @@ namespace API
                logger.LogError(e, "An error has occured during the migration process");
                throw;
            }
-           host.Run();
+           await host.RunAsync();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
