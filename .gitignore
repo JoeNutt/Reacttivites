@@ -5,8 +5,7 @@
 *API/reacttivites.db
 *API/reacttivites.db-shm
 *API/reacttivites.db-wal
-*API/appsettings.json
-# User-specific files
+appsettings.json
 *.rsuser
 *.suo
 *.user
